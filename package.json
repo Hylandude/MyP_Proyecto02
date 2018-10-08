@@ -9,6 +9,6 @@
     "bluebird": "^3.5.2",
     "jasmine": "^3.2.0",
     "music-metadata": "^3.1.2",
-    "sequelize": "^4.39.0"
+    "sqlite3": "^4.0.2"
   }
 }

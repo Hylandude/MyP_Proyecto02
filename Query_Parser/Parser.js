@@ -20,11 +20,4 @@ class Parser {
 
 }
 
-var main = function(){
-    var parser = new Parser();
-    parser.queryString = "hola";
-    console.log(parser.queryString);
-    console.log(parser.parse());
-}
-
-main();
+exports.Parser = new Parser();
