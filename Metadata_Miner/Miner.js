@@ -65,12 +65,3 @@ class Miner{
 }
 
 exports.Miner = new Miner();
-
-var main = async function(){
-    var miner = new Miner();
-    var minedItems = await miner.mine();
-    console.log(minedItems);
-    console.log(minedItems.length);
-}
-
-main();
