@@ -1,0 +1,14 @@
+{
+  "name": "metadata-miner",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./Metadata_Miner/Miner.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "jasmine": "^3.2.0",
+    "music-metadata": "^3.1.2",
+    "sequelize": "^4.39.0"
+  }
+}
