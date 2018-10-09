@@ -56,11 +56,11 @@ var parseTRCK = function(TRCK){
     if(typeof TRCK == 'number') return TRCK;
     var trackNumber = TRCK.split("/")[0];
     trackNumber = parseInt(trackNumber);
-    return isNaN(trackNumber) ? 1 : trackNumber;
+    return (isNaN(trackNumber) ? 1 : trackNumber);
 }
 
 var parseTDRC = function(TDRC, TYER){
-    if(!isNan(parseInt(TYER))) return TYER;
+    if(!isNaN(parseInt(TYER))) return TYER;
     if(typeof TDRC == 'undefined') return new Date().getFullYear();
     if(typeof TDRC == 'number') return TDRC;
     var dateRecorded = new Date(TDRC);
