@@ -28,7 +28,8 @@ class Miner{
                     if(file.indexOf('.mp3')>=0){
                         var tags = await me.farmTags(mm.parseFile(dir+'/'+file, {native: true, duration: true}));
                         if (typeof tags != 'undefined'){
-                            tags.dir = dir+'/'+file;
+                            tags.albumDir = dir;
+                            tags.rolaDir = dir+'/'+file;
                             mined.push(tags);
                         }
                     }

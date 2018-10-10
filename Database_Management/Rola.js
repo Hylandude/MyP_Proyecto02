@@ -3,10 +3,12 @@
 class Rola{
     constructor(tags){
         this._title = tags.TIT2;
-        this._path = tags.dir;
+        this._path = tags.rolaDir;
         this._genre = tags.TCON;
+        this._performer = tags.TPE1;
         this._track = parseTRCK(tags.TRCK);
         this._year = parseTDRC(tags.TDRC, tags.TYER);
+        this._album = {name: tags.TALB, dir: tags.albumDir}
     }
 
     set title(title){
@@ -33,6 +35,14 @@ class Rola{
         return this._genre;
     }
 
+    set performer(performer){
+        this._performer = performer;
+    }
+
+    get performer(){
+        return this._performer;
+    }
+
     set track(track){
         this._track = parseTRCK(track);
     }
@@ -47,6 +57,14 @@ class Rola{
 
     get year(){
         return this._year;
+    }
+
+    set album(album){
+        this._album = album;
+    }
+
+    get album(){
+        return this._album;
     }
 
 }
