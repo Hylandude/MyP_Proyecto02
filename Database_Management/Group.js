@@ -1,6 +1,6 @@
 "use strict"
 
-class Performer{
+class Group{
 
     constructor(name, startDate="", endDate=""){
         this._name = name;
@@ -33,3 +33,5 @@ class Performer{
     }
 
 }
+
+module.exports = Group;

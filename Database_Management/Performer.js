@@ -24,3 +24,5 @@ class Performer{
     }
 
 }
+
+module.exports = Performer;
