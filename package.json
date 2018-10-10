@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./Query_Parser/Parser.js"
+    "start": "node ./Database_Management/DatabaseController.js",
+    "test": "jasmine"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
