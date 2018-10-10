@@ -1,6 +1,6 @@
 "use strict"
 
-class Group{
+class Person{
 
     constructor(name, realName="", birthDate="", deathDate=""){
         this._name = name;
@@ -43,4 +43,4 @@ class Group{
 
 }
 
-module.exports = Group;
+module.exports = Person;
