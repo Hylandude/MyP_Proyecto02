@@ -1,6 +1,7 @@
 "use strict";
 const fs = require('fs');
 const mm = require('music-metadata');
+const Rola = require('../Database_Management/Rola');
 
 class Miner{
 
@@ -30,7 +31,7 @@ class Miner{
                         if (typeof tags != 'undefined'){
                             tags.albumDir = dir;
                             tags.rolaDir = dir+'/'+file;
-                            mined.push(tags);
+                            mined.push(new Rola(tags));
                         }
                     }
                 }

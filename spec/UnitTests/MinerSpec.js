@@ -1,4 +1,4 @@
-var fs = require('fs');
+const Rola = require('../../Database_Management/Rola');
 
 describe("Miner", function() {
 
@@ -25,14 +25,8 @@ describe("Miner", function() {
             //only checks .mp3 files
             expect(minedItems.length).toEqual(25)
 
-            //has required tags populated
-            var tags = Object.keys(minedItems[0]);
-            expect(tags).toContain("TPE1");
-            expect(tags).toContain("TIT2");
-            expect(tags).toContain("TALB");
-            expect(tags).toContain("TDRC");
-            expect(tags).toContain("TCON");
-            expect(tags).toContain("TRCK");
+            //has array is populated with Rolas
+            expect(minedItems[0] instanceof Rola).toBeTruthy();
 
             done();
         });
