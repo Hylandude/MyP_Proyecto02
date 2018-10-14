@@ -79,7 +79,27 @@ class Database{
     }
 
     addRola(rola){
-
+        let me = this;
+        return new Promise(function(resolve, reject){
+            if(!rola) return resolve(false);
+            var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+                if(err) return resolve(false)
+            });
+            db.serialize(async function(){
+                //check the performer is unique, if not, create it.
+                var performerID = await me.findOrCreate(db, "performers", {name: rola.performer});
+                var albumID = await me.findOrCreate(db, "albums", {path: rola.album.dir, name:rola.album.name , year:rola.year });
+                if(!performerID || !albumID) return resolve(undefined);
+                db.run( "INSERT into rolas(id_performer, id_album, path, title, track, year, genre) "+
+                        "VALUES ("+performerID+", "+albumID+", '"+rola.rolaDir+"', '"+rola.title+"', "+rola.track+", "+rola.year+", '"+rola.genre+"');",
+                      function(err){
+                          if(err) return resolve(undefined);
+                          return resolve(this.lastID);
+                      }
+                );
+                db.close()
+            });
+        });
     }
 
     addPerformer(performer){
@@ -109,6 +129,44 @@ class Database{
     setPerformerType(performer, type){
 
     }
+
+    findOrCreate(db, type, object){
+        return new Promise(function(resolve, reject){
+          var selectQuery = "SELECT * from "+type;
+          var insertQuery = "INSERT into "+type;
+          switch (type) {
+            case "performers":
+                selectQuery = selectQuery + " WHERE name = '"+object.name+"';"
+                insertQuery = insertQuery + "(id_type, name) VALUES (2,'"+object.name+"');"
+                break;
+            case "albums":
+                selectQuery = selectQuery + " WHERE name = '"+object.name+"' AND path = '"+object.path+"';"
+                insertQuery = insertQuery + "(path, name, year) VALUES ('"+object.path+"', '"+object.name+"', "+object.year+");"
+            default:
+          }
+          db.get(selectQuery, function(err, row){
+              if (err) return resolve(undefined);
+              if (row) return resolve(row["id_"+type.slice(0,type.length-1)])
+              db.run(insertQuery, function(err){
+                  if (err){
+                    console.log(err);
+                    return resolve(undefined)
+                  };
+                  return resolve(this.lastID);
+              })
+          });
+        });
+    }
 }
+
+
+
+var main = async function(){
+    var db = new Database();
+    db.initDatabase();
+    var result = await db.addRola({performer: "thatGuy", album:{name:"otherOne", dir: __dirname+"/lolol"}, year:2018, title: "SomeOtherTitle", rolaDir: __dirname, track: 10, genre:"RB"});
+}
+
+main();
 
 module.exports = Database;
