@@ -121,7 +121,22 @@ class Database{
     }
 
     addGroup(group){
-
+        let me = this;
+        return new Promise(function(resolve, reject){
+            var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+                if(err) return resolve(false)
+            });
+            db.serialize(function(){
+                db.run("INSERT into groups(name, start_date, end_date) VALUES ('"+group.name+"', '"+group.startDate+"', '"+group.endDate+"');",
+                        function(err){
+                            console.log(err)
+                            if (err) return resolve (undefined);
+                            return resolve(this.lastID);
+                        }
+                );
+                db.close();
+            });
+        });
     }
 
     addPerson (person){
@@ -175,8 +190,8 @@ class Database{
 
 var main = async function(){
    db = new Database();
-   var performer = await db.addPerformer(new Performer("That one Guy who did the thing", "Person"));
-   console.log(performer);
+   var group = await db.addGroup(new Group("NYPC", "some time", "nope"));
+   console.log(group);
 }
 
 main()

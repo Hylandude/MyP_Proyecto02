@@ -25,11 +25,11 @@ class Group{
     }
 
     set endDate(endDate){
-        this.endDate = endDate;
+        this._endDate = endDate;
     }
 
     get endDate(){
-        return this.endDate;
+        return this._endDate;
     }
 
 }
