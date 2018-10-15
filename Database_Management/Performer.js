@@ -23,6 +23,18 @@ class Performer{
         return this._type;
     }
 
+    getTypeID(){
+        switch (this._type) {
+          case 'Person':
+              return 0;
+          case 'Group':
+              return 1;
+          case 'Unknown':
+          default:
+              return 2;
+        }
+    }
+
 }
 
 module.exports = Performer;

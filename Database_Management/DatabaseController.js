@@ -97,13 +97,27 @@ class Database{
                           return resolve(this.lastID);
                       }
                 );
-                db.close()
+                db.close();
             });
         });
     }
 
     addPerformer(performer){
-
+        let me = this;
+        return new Promise(function(resolve, reject){
+            var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+                if(err) return resolve(false)
+            });
+            db.serialize(function(){
+                db.run("INSERT into performers(id_type, name) VALUES ("+performer.getTypeID()+", '"+performer.name+"');",
+                        function(err){
+                            if (err) return resolve (undefined);
+                            return resolve(this.lastID);
+                        }
+                );
+                db.close();
+            });
+        });
     }
 
     addGroup(group){
@@ -159,14 +173,12 @@ class Database{
     }
 }
 
-
-
 var main = async function(){
-    var db = new Database();
-    db.initDatabase();
-    var result = await db.addRola({performer: "thatGuy", album:{name:"otherOne", dir: __dirname+"/lolol"}, year:2018, title: "SomeOtherTitle", rolaDir: __dirname, track: 10, genre:"RB"});
+   db = new Database();
+   var performer = await db.addPerformer(new Performer("That one Guy who did the thing", "Person"));
+   console.log(performer);
 }
 
-main();
+main()
 
 module.exports = Database;
