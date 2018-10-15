@@ -23,8 +23,8 @@ class Performer{
         return this._type;
     }
 
-    getTypeID(){
-        switch (this._type) {
+    getTypeID(type = this._type){
+        switch (type) {
           case 'Person':
               return 0;
           case 'Group':

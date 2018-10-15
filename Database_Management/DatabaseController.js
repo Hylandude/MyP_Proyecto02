@@ -182,7 +182,24 @@ class Database{
     }
 
     setPerformerType(performer, type){
-
+      let me = this;
+      return new Promise(function(resolve, reject){
+          if( !performer ||  !(performer instanceof Performer)) return resolve(false);
+          var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+              if(err) return resolve(false);
+          });
+          db.serialize(async function(){
+              var performerID = await me.findOrCreate(db, "performers", performer);
+              if (!performerID) return resolve(false);
+              db.run("UPDATE performers SET id_type = "+performer.getTypeID(type)+" WHERE id_performer = "+performerID,
+                      function(err){
+                          if(err) return resolve(false);
+                          return resolve(true);
+                      }
+              );
+              db.close();
+          });
+      });
     }
 
     findOrCreate(db, type, object){
@@ -219,13 +236,5 @@ class Database{
         });
     }
 }
-
-var main = async function(){
-   db = new Database();
-   var group = await db.associatePersonToGroup(new Person("New Guy", "Oh yeah that guy", "that one day", "nope"), new Group("Other Group", "today"));
-   console.log(group);
-}
-
-main()
 
 module.exports = Database;
