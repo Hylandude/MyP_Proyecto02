@@ -160,15 +160,25 @@ class Database{
     }
 
     associatePersonToGroup(person, group){
-
-    }
-
-    associateRolaToGroup(rola, group){
-
-    }
-
-    associateRolaToAlbum(rola, album){
-
+        let me = this;
+        return new Promise(function(resolve, reject){
+            if( (!person ||  !(person instanceof Person)) || (!group ||  !(group instanceof Group)) ) return resolve(false);
+            var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+                if(err) return resolve(false);
+            });
+            db.serialize(async function(){
+                var personID = await me.findOrCreate(db, "persons", person);
+                var groupID = await me.findOrCreate(db, "groups", group);
+                if (!personID || !groupID) return resolve(false);
+                db.run("INSERT into in_group(id_person, id_group) VALUES ("+personID+","+groupID+");",
+                        function(err){
+                            if(err) return resolve(false);
+                            return resolve(this.lastID);
+                        }
+                );
+                db.close();
+            });
+        });
     }
 
     setPerformerType(performer, type){
@@ -181,20 +191,26 @@ class Database{
           var insertQuery = "INSERT into "+type;
           switch (type) {
             case "performers":
-                selectQuery = selectQuery + " WHERE name = '"+object.name+"';"
-                insertQuery = insertQuery + "(id_type, name) VALUES (2,'"+object.name+"');"
+                selectQuery = selectQuery + " WHERE name = '"+object.name+"';";
+                insertQuery = insertQuery + "(id_type, name) VALUES (2,'"+object.name+"');";
                 break;
             case "albums":
-                selectQuery = selectQuery + " WHERE name = '"+object.name+"' AND path = '"+object.path+"';"
-                insertQuery = insertQuery + "(path, name, year) VALUES ('"+object.path+"', '"+object.name+"', "+object.year+");"
-            default:
+                selectQuery = selectQuery + " WHERE name = '"+object.name+"' AND path = '"+object.path+"';";
+                insertQuery = insertQuery + "(path, name, year) VALUES ('"+object.path+"', '"+object.name+"', "+object.year+");";
+                break;
+            case "persons":
+                selectQuery = selectQuery + " WHERE real_name = '"+object.realName+"' AND stage_name = '"+object.name+"';";
+                insertQuery = insertQuery + "(stage_name, real_name, birth_date, death_date) VALUES ('"+object.name+"', '"+object.realName+"', '"+object.birthDate+"', '"+object.deathDate+"');";
+                break;
+            case "groups":
+                selectQuery = selectQuery + " WHERE name = '"+object.name+"';";
+                insertQuery = insertQuery + "(name, start_date, end_date) VALUES ('"+object.name+"', '"+object.startDate+"', '"+object.endDate+"');";
           }
           db.get(selectQuery, function(err, row){
               if (err) return resolve(undefined);
               if (row) return resolve(row["id_"+type.slice(0,type.length-1)])
               db.run(insertQuery, function(err){
                   if (err){
-                    console.log(err);
                     return resolve(undefined)
                   };
                   return resolve(this.lastID);
@@ -206,7 +222,7 @@ class Database{
 
 var main = async function(){
    db = new Database();
-   var group = await db.addPerson(new Person("SomeGuy", "Oh yeah that guy", "that one day", "nope"));
+   var group = await db.associatePersonToGroup(new Person("New Guy", "Oh yeah that guy", "that one day", "nope"), new Group("Other Group", "today"));
    console.log(group);
 }
 
