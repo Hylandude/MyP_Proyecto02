@@ -34,11 +34,11 @@ class Person{
     }
 
     set deathDate(deathDate){
-        this.deathDate = deathDate;
+        this._deathDate = deathDate;
     }
 
     get deathDate(){
-        return this.deathDate;
+        return this._deathDate;
     }
 
 }

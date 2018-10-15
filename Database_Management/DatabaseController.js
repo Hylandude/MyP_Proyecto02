@@ -148,7 +148,7 @@ class Database{
                 if(err) return resolve(false);
             });
             db.serialize(function(){
-                db.run("INSERT into persons(stage_name, real_name, birth_date, death_date) VALUES ('"+person.name+"', '"+person.realName+"', '"+person.birthDate+"', "+person.deathDate+");",
+                db.run("INSERT into persons(stage_name, real_name, birth_date, death_date) VALUES ('"+person.name+"', '"+person.realName+"', '"+person.birthDate+"', '"+person.deathDate+"');",
                         function(err){
                             if (err) return resolve (undefined);
                             return resolve(this.lastID);
@@ -206,7 +206,7 @@ class Database{
 
 var main = async function(){
    db = new Database();
-   var group = await db.addPerson(new Group("NYPC", "some time", "nope"));
+   var group = await db.addPerson(new Person("SomeGuy", "Oh yeah that guy", "that one day", "nope"));
    console.log(group);
 }
 
