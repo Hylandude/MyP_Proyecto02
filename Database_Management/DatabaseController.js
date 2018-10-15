@@ -81,9 +81,9 @@ class Database{
     addRola(rola){
         let me = this;
         return new Promise(function(resolve, reject){
-            if(!rola) return resolve(false);
+            if(!rola ||  !(rola instanceof Rola)) return resolve(false);
             var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
-                if(err) return resolve(false)
+                if(err) return resolve(false);
             });
             db.serialize(async function(){
                 //check the performer is unique, if not, create it.
@@ -105,8 +105,9 @@ class Database{
     addPerformer(performer){
         let me = this;
         return new Promise(function(resolve, reject){
+            if(!performer ||  !(performer instanceof Performer)) return resolve(false);
             var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
-                if(err) return resolve(false)
+                if(err) return resolve(false);
             });
             db.serialize(function(){
                 db.run("INSERT into performers(id_type, name) VALUES ("+performer.getTypeID()+", '"+performer.name+"');",
@@ -123,13 +124,13 @@ class Database{
     addGroup(group){
         let me = this;
         return new Promise(function(resolve, reject){
+            if(!group ||  !(group instanceof Group)) return resolve(false);
             var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
-                if(err) return resolve(false)
+                if(err) return resolve(false);
             });
             db.serialize(function(){
                 db.run("INSERT into groups(name, start_date, end_date) VALUES ('"+group.name+"', '"+group.startDate+"', '"+group.endDate+"');",
                         function(err){
-                            console.log(err)
                             if (err) return resolve (undefined);
                             return resolve(this.lastID);
                         }
@@ -140,7 +141,22 @@ class Database{
     }
 
     addPerson (person){
-
+        let me = this;
+        return new Promise(function(resolve, reject){
+            if(!person ||  !(person instanceof Person)) return resolve(false);
+            var db = new sqlite3.Database(me.path+"/"+me.dbName, function(err){
+                if(err) return resolve(false);
+            });
+            db.serialize(function(){
+                db.run("INSERT into persons(stage_name, real_name, birth_date, death_date) VALUES ('"+person.name+"', '"+person.realName+"', '"+person.birthDate+"', "+person.deathDate+");",
+                        function(err){
+                            if (err) return resolve (undefined);
+                            return resolve(this.lastID);
+                        }
+                );
+                db.close();
+            });
+        });
     }
 
     associatePersonToGroup(person, group){
@@ -190,7 +206,7 @@ class Database{
 
 var main = async function(){
    db = new Database();
-   var group = await db.addGroup(new Group("NYPC", "some time", "nope"));
+   var group = await db.addPerson(new Group("NYPC", "some time", "nope"));
    console.log(group);
 }
 
