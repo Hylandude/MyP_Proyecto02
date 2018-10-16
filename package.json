@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./Database_Management/DatabaseController.js",
+    "start": "node ./Query_Parser/Parser.js",
     "test": "jasmine"
   },
   "dependencies": {
