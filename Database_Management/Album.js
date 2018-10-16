@@ -1,6 +1,6 @@
 "use strict"
 
-class Group{
+class Album{
 
     constructor(name, path="", year=new Date().getFullYear()){
         this._name = name;
@@ -34,4 +34,4 @@ class Group{
 
 }
 
-module.exports = Group;
+module.exports = Album;
