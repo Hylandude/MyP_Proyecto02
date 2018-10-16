@@ -3,6 +3,10 @@ const fs = require('fs');
 const mm = require('music-metadata');
 const Rola = require('../Database_Management/Rola');
 
+/**
+* Class that represents the metadata miner
+* @class
+*/
 class Miner{
 
     constructor(){
@@ -17,6 +21,12 @@ class Miner{
         return this._percentage;
     }
 
+    /**
+    * Function that mines metadata from all mp3 files inside a directory
+    * @param {string} dir - Optional argument. Directory where to mine the information from. Defaults to ~home/Music.
+    * @param {array} mined - Internal argument. Keeps track of the already mined songs during recursion.
+    * @return {array} Returns an array of Rola objects.
+    */
     async mine(dir=require('os').homedir()+'/Music', mined=[]){
         try{
             var me = this;
@@ -42,6 +52,11 @@ class Miner{
         }
     }
 
+    /**
+    * Function that returns the ID3v4 tags of a single song.
+    * @param {Promise} Promise returned from the music-metadata library.
+    * @return {object} Returns a JSON object with all the tags found for the song.
+    */
     farmTags(promisedTag){
         return new Promise(function(resolve, reject){
             promisedTag.then(function(metadata){

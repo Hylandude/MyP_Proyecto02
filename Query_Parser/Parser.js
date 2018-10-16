@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+* Class that represents the pseudo-compiler from user input to SQL queries
+* @class
+*/
 class Parser {
 
     constructor(){
@@ -14,6 +18,11 @@ class Parser {
         return this._queryString;
     }
 
+    /**
+    * Function that transforms a given string into an SQL query
+    * @param {string} queryString - Optional argument. The string that will be converted into SQL. Defaults to the queryString parameter of the object that called the function.
+    * @return {string} Returns a valid SQL query as a string.
+    */
     parse(queryString = this._queryString){
         //Regular search, no special modifiers
         if(queryString.indexOf("#") < 0 && queryString.indexOf('"') < 0 && queryString.indexOf("|") < 0){
@@ -74,6 +83,10 @@ class Parser {
     }
 }
 
+/**
+* Private function that transforms a user given parameter into the appropiate databse column name
+* @param {string} field - The field that will be searched.
+*/
 var getDbField = function(field){
     switch (field) {
         case "titulo":
