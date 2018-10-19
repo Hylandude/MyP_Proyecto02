@@ -1,17 +1,29 @@
 <DOCTYPE html>
 <html>
   <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../styles/main-style.css">
     <title>Music Database</title>
   </head>
   <body>
-    <h1>Music Databse<h1>
-    <h2>
-      <form id="busqueda">
-        <input type="text" id="search-box" value=""> </input>
-        <button type="submit" id="submit-search">Buscar</input>
-      </form>
-    </h2>
-    <ul id="display-rolas"><ul>
+    <div class="container">
+        <h1>Music Databse<h1>
+        <h2>
+          <form id="busqueda">
+            <input type="text" id="search-box" value="Ingresa una busqueda aqui"> </input>
+          </form>
+        </h2>
+        <div class="row">
+          <div class="col s2">Titulo</div>
+          <div class="col s2">Artista</div>
+          <div class="col s2">Album</div>
+          <div class="col s2">Genero</div>
+          <div class="col s2">Año</div>
+          <div class="col s2">Numero</div>
+        </div>
+        <ul class="collection" id="display-rolas"><ul>
+    </div>
     <script src="../scripts/sendSearch.js"></script>
     <script src="../scripts/receiveSearch.js"></script>
   </body>

@@ -42,6 +42,7 @@ app.on("ready", () => {
 ipcMain.on("searchRequested",async function(event, searchQuery){
     var SQLstring = Parser.parse(searchQuery);
     var busqueda = await DAO.search(SQLstring);
+    console.log(busqueda);
     mainWindow.webContents.send("searchPerformed", busqueda);
 });
 
