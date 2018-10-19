@@ -1,9 +1,9 @@
-const Rola = require('../../Database_Management/Rola');
+const Rola = require('../../lib/Rola');
 
 describe("Miner", function() {
 
-    var miner = require('../../Metadata_Miner/Miner').Miner;
-    var demoPath = __dirname+'/TestSongs';
+    var miner = require('../../lib/Miner').Miner;
+    var demoPath = __dirname+'/Tags Test MP3s';
     var originalTimeout;
     var minedItems = [];
 
@@ -23,7 +23,7 @@ describe("Miner", function() {
             expect(Array.isArray(minedItems)).toBeTruthy();
 
             //only checks .mp3 files
-            expect(minedItems.length).toEqual(25)
+            expect(minedItems.length).toEqual(9)
 
             //has array is populated with Rolas
             expect(minedItems[0] instanceof Rola).toBeTruthy();

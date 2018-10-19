@@ -1,14 +1,14 @@
 describe("Rola", function() {
 
-    var Rola = require('../../Database_Management/Rola');
+    var Rola = require('../../lib/Rola');
     var testRola = new Rola({
-        TPE1 : 'Green Day',
-        TIT2 : 'Longview',
-        TALB : 'International Superhits',
-        TDRC : '2001',
-        TCON : 'Punk Rock',
-        TRCK : '7/21',
-        dir  : __dirname+'/TestSongs/Green Day/International Superhits!/Longview.mp3'
+        TPE1 : 'Performer',
+        TIT2 : 'Title',
+        TALB : 'Album',
+        TDRC : '2018',
+        TCON : 'Genre',
+        TRCK : '1/09',
+        rolaDir  : __dirname+'/Tags Test MP3s/test1.mp3'
     });
 
     describe("construction", function(){

@@ -1,6 +1,6 @@
 describe("Parser", function(){
 
-    var parser = require('../../Query_Parser/Parser').Parser;
+    var parser = require('../../lib/Parser').Parser;
 
     describe("convert string to SQL query", function(){
 
