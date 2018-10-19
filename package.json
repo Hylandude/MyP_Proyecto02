@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./Query_Parser/Parser.js",
-    "test": "jasmine"
+    "test": "jasmine",
+    "mine": "node ./lib/Miner.js"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
