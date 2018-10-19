@@ -38,6 +38,13 @@ app.on("ready", () => {
 
 });
 
+//Catch searchPerformed
+ipcMain.on("searchRequested",async function(event, searchQuery){
+    var SQLstring = Parser.parse(searchQuery);
+    var busqueda = await DAO.search(SQLstring);
+    mainWindow.webContents.send("searchPerformed", busqueda);
+});
+
 //About Window
 function showAbout(){
   aboutWindow = new BrowserWindow({width: 200, height: 300, title: "Acerca de..."});

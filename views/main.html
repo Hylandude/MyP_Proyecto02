@@ -2,11 +2,17 @@
 <html>
   <head>
     <title>Music Database</title>
-    <script src="../scripts/testMain.js" ></script>
   </head>
-
   <body>
     <h1>Music Databse<h1>
-    <p id="result"></p>
+    <h2>
+      <form id="busqueda">
+        <input type="text" id="search-box" value=""> </input>
+        <button type="submit" id="submit-search">Buscar</input>
+      </form>
+    </h2>
+    <ul id="display-rolas"><ul>
+    <script src="../scripts/sendSearch.js"></script>
+    <script src="../scripts/receiveSearch.js"></script>
   </body>
 </html>
