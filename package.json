@@ -2,14 +2,21 @@
   "name": "metadata-miner",
   "version": "0.0.0",
   "private": true,
+  "main": "index.js",
   "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w sqlite3",
     "test": "jasmine",
     "mine": "node ./lib/Miner.js"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
+    "electron": "^3.0.5",
     "jasmine": "^3.2.0",
     "music-metadata": "^3.1.2",
     "sqlite3": "^4.0.2"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.2"
   }
 }
