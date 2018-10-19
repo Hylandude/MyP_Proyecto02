@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron")
+const { app, BrowserWindow, Menu, ipcMain } = require("electron")
 
 //Database Access Object
 const Database = require('./lib/DatabaseController');
@@ -18,27 +18,78 @@ const Miner = require('./lib/Miner').Miner;
 //SQL Query pseudo-compiler
 const Parser = require('./lib/Parser').Parser;
 
-app.on("ready", () => {
-	let mainWindow = new BrowserWindow({ height: 800, width: 800, show: false })
-	mainWindow.loadURL(`file://${__dirname}/main.html`)
-	mainWindow.once("ready-to-show", () => { mainWindow.show() })
+//Windows
+let mainWindow
+let aboutWindow
 
-	ipcMain.on("mainWindowLoaded", async function () {
-      var minedRolas = await Miner.mine();
-      console.log(minedRolas.length+" Have been mined adding to DB.")
-      var dbOK = await DAO.initDatabase();
-      if(dbOK){
-          for(var i=0; i<minedRolas.length; i++){
-              var rola = minedRolas[i]
-              console.log((i+1)+" / "+minedRolas.length)
-              await DAO.addRola(rola);
-          }
-      }
-      var allRolas = await DAO.getAllRolas();
-      mainWindow.webContents.send("resultSent", allRolas);
-	});
+//Check for app to be ready
+app.on("ready", () => {
+	mainWindow = new BrowserWindow({ height: 800, width: 800, show: false });
+
+	mainWindow.loadURL(`file://${__dirname}/views/main.html`);
+	mainWindow.once("ready-to-show", () => { mainWindow.show() });
+
+  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+  Menu.setApplicationMenu(mainMenu);
+
+  mainWindow.on("closed", function(){
+      app.quit();
+  });
+
 });
 
+//About Window
+function showAbout(){
+  aboutWindow = new BrowserWindow({width: 200, height: 300, title: "Acerca de..."});
+  aboutWindow.loadURL(`file://${__dirname}/views/acercaDe.html`);
+
+  aboutWindow.on("close", function(){
+      aboutWindow = null;
+  });
+}
+
+//Menu template
+const mainMenuTemplate = [
+    {
+      label: "Menu",
+      submenu: [
+        {
+          label: "Salir",
+          accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+          click(){
+            app.quit();
+          }
+        },
+        {
+          label: "Acerca De",
+          click(){
+              showAbout();
+          }
+        }
+      ]
+    }
+]
+
+if(process.platform == 'darwin'){
+    mainMenuTemplate.unshift({});
+}
+if(process.env.NODE_ENV !== 'production'){
+    mainMenuTemplate.push({
+        label: "Dev tools",
+        submenu:[
+          {
+            label: 'Toggle Tools',
+            accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
+            click(item, focusedWindow){
+                focusedWindow.toggleDevTools();
+            }
+          },
+          {
+            role: "reload"
+          }
+        ]
+    });
+}
 
 
 app.on("window-all-closed", () => { app.quit() })
