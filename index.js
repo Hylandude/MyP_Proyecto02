@@ -19,8 +19,9 @@ const Miner = require('./lib/Miner').Miner;
 const Parser = require('./lib/Parser').Parser;
 
 //Windows
-let mainWindow
-let aboutWindow
+let mainWindow;
+let aboutWindow;
+let editRolaWindow;
 
 //Check for app to be ready
 app.on("ready", () => {
@@ -42,9 +43,37 @@ app.on("ready", () => {
 ipcMain.on("searchRequested",async function(event, searchQuery){
     var SQLstring = Parser.parse(searchQuery);
     var busqueda = await DAO.search(SQLstring);
-    console.log(busqueda);
     mainWindow.webContents.send("searchPerformed", busqueda);
 });
+
+//Catch editRolaRequest
+ipcMain.on("editRolaRequest", async function(event,rola){
+		showEditRola(rola);
+});
+
+
+//Catch editRolaReady
+var editing;
+ipcMain.on("readyToEdit", function(event){
+		editRolaWindow.webContents.send("editValue", editing);
+		editing = null;
+});
+
+//Catch submitEditionRequest
+ipcMain.on("submitEditionRequest", function(event, newValues){
+		console.log(newValues);
+		editRolaWindow.close();
+});
+
+//Edit Rola Window
+function showEditRola(rola){
+		editRolaWindow = new BrowserWindow({width: 500, height: 450, title: "Editar Rola"});
+	  editRolaWindow.loadURL(`file://${__dirname}/views/editRola.html`);
+		editing = rola;
+	  editRolaWindow.on("close", function(){
+	      editRolaWindow = null;
+	  });
+}
 
 //About Window
 function showAbout(){

@@ -1,0 +1,56 @@
+<DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Editar Rola</title>
+  </head>
+  <body>
+    <div id="main" class="container">
+      <form class="row" id="type-selector" action="#">
+        <p class="col s4">
+          <label>
+            <input name="tipo" type="radio" value="Person" />
+            <span>Persona</span>
+          </label>
+        </p>
+        <p class="col s4">
+          <label>
+            <input name="tipo" type="radio" value="Group" />
+            <span>Grupo/Banda</span>
+          </label>
+        </p>
+        <p class="col s4">
+          <label>
+            <input name="tipo" type="radio" value="Unknown"/>
+            <span>Desconocido</span>
+          </label>
+        </p>
+      </form>
+        <form onsubmit="submitPerson()" name="input-fields" class="hide" id="person-fields">
+          <label>Nombre de Artista:</label>
+          <input id="person-name" type="text">
+          <label>Nombre Real:</label>
+          <input id="person-Rname" type="text">
+          <label>Nacimiento:</label>
+          <input id="person-birth" type="text">
+          <label>Muerte:</label>
+          <input id="person-death" type="text">
+        </form>
+        <form onsubmit="submitGroup()" name="input-fields" class="hide" id="group-fields">
+          <label>Nombre del grupo:</label>
+          <input id="group-name" type="text">
+          <label>Fecha de creación:</label>
+          <input id="group-create" type="text">
+          <label>Fecha de separación:</label>
+          <input id="group-disband" type="text">
+        </form>
+        <form onsubmit="submitPerformer()" name="input-fields" class="hide" id="performer-fields">
+          <label>Nombre del interprete:</label>
+          <input id="performer-name" type="text">
+        </form>
+    </div>
+    <script src="../scripts/saveOpenData.js"></script>
+    <script src="../scripts/typeSelector.js"></script>
+  </body>
+</html>
