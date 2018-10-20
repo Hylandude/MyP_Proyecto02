@@ -73,6 +73,8 @@ Es importante dejar un espacio despues de cada identificador.
 Tambien es posible realizar busquedas literales, esto buscara en la base de datos de manera exacta en ves de usar subcadenas por ejemplo:
 * #album subCadena | #artist "Busqueda literal"
 
+Para editar los datos de una rola se puede hacer doble click sobre la misma y se mostrara la ventana para editar la informacion.
+
 ## Licensing
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
