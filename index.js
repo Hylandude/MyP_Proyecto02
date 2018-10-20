@@ -22,6 +22,7 @@ const Parser = require('./lib/Parser').Parser;
 let mainWindow;
 let aboutWindow;
 let editRolaWindow;
+let progressWindow;
 
 //Check for app to be ready
 app.on("ready", () => {
@@ -55,7 +56,7 @@ ipcMain.on("editRolaRequest", async function(event,rola){
 ipcMain.on("mainWindowLoaded", async function(event){
 		var allRolas = await DAO.getAllRolas();
 		mainWindow.webContents.send("searchPerformed", allRolas);
-})
+});
 
 //Catch editRolaReady
 var editing;
@@ -82,12 +83,31 @@ function showEditRola(rola){
 
 //About Window
 function showAbout(){
-  aboutWindow = new BrowserWindow({width: 200, height: 300, title: "Acerca de..."});
-  aboutWindow.loadURL(`file://${__dirname}/views/acercaDe.html`);
+	  aboutWindow = new BrowserWindow({width: 200, height: 300, title: "Acerca de..."});
+	  aboutWindow.loadURL(`file://${__dirname}/views/acercaDe.html`);
 
-  aboutWindow.on("close", function(){
-      aboutWindow = null;
-  });
+	  aboutWindow.on("close", function(){
+	      aboutWindow = null;
+	  });
+}
+
+//Progress Window
+function showProgress(){
+		progressWindow = new BrowserWindow({width: 500, height: 150, title:"Progreso"});
+		progressWindow.loadURL(`file://${__dirname}/views/Progress.html`);
+}
+
+//Mine data on request
+async function mineData(){
+		showProgress();
+		console.log("MINING...");
+		var minedRolas = await Miner.mine();
+		console.log("MINE COMPLETE UPLOADING TO DB");
+		for(var i=0; i<minedRolas.length; i++){
+				console.log((i+1)+"/"+minedRolas.length);
+				await DAO.addRola(minedRolas[i]);
+				progressWindow.webContents.send("rolaAdded",{current:i+1, total: minedRolas.length});
+		}
 }
 
 //Menu template
@@ -102,6 +122,13 @@ const mainMenuTemplate = [
             app.quit();
           }
         },
+				{
+					label: "Minar Datos",
+					accelerator: process.platform == 'darwin' ? 'Command+M' : 'Ctrl+M',
+					click(){
+							mineData();
+					}
+				},
         {
           label: "Acerca De",
           click(){

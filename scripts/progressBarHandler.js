@@ -1,8 +1,8 @@
-const electron = require("electron");
-const ipc = electron.ipcRenderer;
-document.addEventListener("DOMContentLoaded", function(){
-    ipc.on("rolaAdded", function(evt, progress){
-        let progressBar = document.getElementById("mined-progress");
-        progressBar.value = progress.current/progress.total;
-    });
-})
+const electron = require('electron');
+const {ipcRenderer} = electron;
+
+const progressBar = document.getElementById("progress");
+ipcRenderer.on("rolaAdded", function(evt, progress){
+    console.log("ADDED ROLA!")
+    progressBar.innerHTML = progress.current+"/"+progress.total;
+});

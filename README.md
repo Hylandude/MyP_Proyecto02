@@ -49,7 +49,8 @@ La siguiente es una lista de errores conocidos con el programa
 
 ## Guia de uso
 
-Por omision la aplicacion carga todas las canciones que se encuentren en la base de datos.
+Por omision la aplicacion carga todas las canciones que se encuentren en la base de datos. Si la base de datos se encuentra vacia o no existe se pueden minar los datos seleccionando la opcion "Minar" en el menu (alternativamente se puede usar CTRL+M). 
+
 Para realizar una busqueda basta escribir en el campo superior y presionar "enter"
 Para volver a ver todos los resultados es necesario presionar entrer en la barra de busqueda
 cuando esta se encuentre vacia.
