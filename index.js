@@ -42,7 +42,7 @@ app.on("ready", () => {
 //Catch searchPerformed
 ipcMain.on("searchRequested",async function(event, searchQuery){
     var SQLstring = Parser.parse(searchQuery);
-    var busqueda = await DAO.search(SQLstring);
+    var busqueda = searchQuery== "" ? await DAO.getAllRolas() : await DAO.search(SQLstring);
     mainWindow.webContents.send("searchPerformed", busqueda);
 });
 
@@ -51,6 +51,11 @@ ipcMain.on("editRolaRequest", async function(event,rola){
 		showEditRola(rola);
 });
 
+//Catch mainWindowLoaded
+ipcMain.on("mainWindowLoaded", async function(event){
+		var allRolas = await DAO.getAllRolas();
+		mainWindow.webContents.send("searchPerformed", allRolas);
+})
 
 //Catch editRolaReady
 var editing;
@@ -128,5 +133,5 @@ if(process.env.NODE_ENV !== 'production'){
     });
 }
 
-
+//End process when all windows are closed
 app.on("window-all-closed", () => { app.quit() })

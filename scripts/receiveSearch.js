@@ -1,5 +1,7 @@
 const ul = document.getElementById("display-rolas");
+
 ipcRenderer.on("searchPerformed", function(e, searchResults){
+    ul.innerHTML = "";
     for(var i=0; i<searchResults.length; i++){
         var li = document.createElement('li');
         li.name = JSON.stringify(searchResults[i]);
