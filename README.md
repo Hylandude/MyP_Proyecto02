@@ -1,62 +1,76 @@
-# Proyecto 01 Modelado y Programacion
+# Proyecto 02 Modelado y Programacion
 > Cesar Augusto Farrera Ortega - 311617670
 
-Proyecto 01 Un chat simple con interfaz grafica que utiliza sockets para manejar la comunicacion servidor-cliente
+Proyecto 02 Un editor de etiquetas Id3V4 para archivos .mp3 que guarda los resultados en una base de datos sqlite
 
 ## Como ejecutar el programa
 
 Antes que nada es necesario clonar el repositorio
 
 ```shell
-git clone
+git clone https://github.com/Hylandude/MyP_Proyecto02
 ```
 
-Primero es necesario verificar la dependencia con tkinter
-Tkinter viene por omision en la mayoria de las distribuciones de python3 en caso de no tenerlo usar el siguiente comando
-o su equivalente para la distribucion de unix adecuada:
+Es necesario tener instalado Node.js y npm para informacion en como instalar
+visita https://nodejs.org/es/
 
-```shell
-  sudo apt-get install python3-tk
-```
-
-Una vez instalado tkinter usar los siguientes comandos
-```shell
-python3 Server.py <puerto>
-```
-Esto ejecuta el servidor especificado en <puerto>
+Con el repositorio clonado y Node/npm instalados dentro de la carpeta clonada usa:
 
 ```shell
-python3 GuiClient.py <host> <port>
+npm install
 ```
-Esto ejecuta la vista en la interfaz grafica del cliente conectando en automatico
-<host> es la direccion ip del servidor y <port> el puerto donde se ejecuta el servidor
+
+Esto instalara las dependencias requeridas. Una vez instaladas puedes usar el siguiente
+comando para correr el programa:
+
+```shell
+npm start
+```
+
+Si el programa no corre usa los siguientes comandos para instalar las dependencias a mano
+y compilar electron
+
+```shell
+npm install --save-dev electron-rebuild
+npm install --save electron
+npm install --save sqlite3
+npm run rebuild
+```
+
+Para correr las pruebas unitarias usa:
+```shell
+npm test
+```
 
 ## Bugs/Errores conocidos
 
-La siguiente es una lista de errores conocidos con el cliente/servidor
-* Ctrl+C no termina de manera limpia el servidor
-* La caja de texto en la interfaz grafica no se desplaza de manera automatica, pero es posible desplazarla manualmente
-* Los colores en el combo box de seleccion de evento son incorrectos, por lo que el texto no se muestra hasta poner el mouse sobre una linea
-
-## Extensiones al protocolo
-
-Esta es una lista de funcionalidad extra agregada al protocolo, no afecta la funcionalidad del protocolo duplicado
-* Los usuarios tienen una cuenta de los mensajes invalidos enviados, puede ser usado para silenciar usuarios
-* El servidor manda eventos de tipo MESSAGE, PUBLICMESSAGE y ROOMESSAGE con la finalidad de diferenciarlos en la GUI
-* El servidor avisa a todos los usuarios cuando alguien se conecta o desconecta
-* Los mensajes del servidor vienen prefijos con el usuario "[Servidor]"
+La siguiente es una lista de errores conocidos con el programa
+* No es posible añadir canciones con comillas simples o caracteres especiales
 
 ## Guia de uso
 
-Una vez iniciado el servidor y despues concatado el cliente unicamente es necesario seleccionar el evento del combo box
-ubicado en la esquina inferior izquierda para seleccionar el evento y escribir el mensaje a enviar. Despues presionar
-la tecla enter para enviarlo.
+Por omision la aplicacion carga todas las canciones que se encuentren en la base de datos.
+Para realizar una busqueda basta escribir en el campo superior y presionar "enter"
+Para volver a ver todos los resultados es necesario presionar entrer en la barra de busqueda
+cuando esta se encuentre vacia.
 
-Los eventos que solo requieren de una palabra como USERS o DISCONNECT se escogen en la combo box y despues se presiona la
-tecla enter sin escribir nada en la caja de texto
+Por omision si se escribe cualquier cadena de texto en el campo de busqueda se buscara este
+valor en el album, artista y nombre de la cancion. Se regresan todas aquellas cadenas que usen la cadena dada en alguna parte de los campos previamente especificados.
 
-Para el resto de los eventos es necesario escribir todos los argumentos dentro de la caja de texto
+Es posible acortar el campo de busqueda si se usa la siguiente sintaxis:
+* #titulo TituloABuscar
+* #album AlbumABuscar
+* #genero GeneroABuscar
+* #año AñoABuscar
+* #artista ArtistaABuscar
 
+Esto buscara solo en el campo especificado. Ademas se pueden combinar mediante el uso del caracter "|" para producir busquedas especiales que buscan la cadena dada en cada campo especificado, esto funciona como un operador AND por ejemplo:
+* #album Un Album | #año 2015
+* #artista cierto artista | #album un album | #titulo esa canciones
+Es importante dejar un espacio despues de cada identificador.
+
+Tambien es posible realizar busquedas literales, esto buscara en la base de datos de manera exacta en ves de usar subcadenas por ejemplo:
+* #album subCadena | #artist "Busqueda literal"
 
 ## Licensing
 
